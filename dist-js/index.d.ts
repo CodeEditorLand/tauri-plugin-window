@@ -123,11 +123,11 @@ declare class PhysicalPosition {
      * */
     toLogical(scaleFactor: number): LogicalPosition;
 }
-/** @ignore */
+
 interface WindowDef {
     label: string;
 }
-/** @ignore */
+
 declare global {
     interface Window {
         __TAURI_METADATA__: {
@@ -180,7 +180,7 @@ declare function getCurrent(): Window;
  * @since 2.0.0
  */
 declare function getAll(): Window[];
-/** @ignore */
+
 export type WindowLabel = string;
 /**
  * Create new webview window or get a handle to an existing one.
@@ -337,7 +337,7 @@ declare class Window {
      * @param payload Event payload.
      */
     emit(event: string, payload?: unknown): Promise<void>;
-    /** @ignore */
+    
     _handleTauriEvent<T>(event: string, handler: EventCallback<T>): boolean;
     /**
      * The scale factor that can be used to map physical pixels to logical pixels.

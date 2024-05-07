@@ -161,12 +161,12 @@ class PhysicalPosition {
   }
 }
 
-/** @ignore */
+
 interface WindowDef {
   label: string;
 }
 
-/** @ignore */
+
 declare global {
   interface Window {
     __TAURI_METADATA__: {
@@ -288,10 +288,10 @@ function getAll(): Window[] {
   );
 }
 
-/** @ignore */
+
 // events that are emitted right here instead of by the created webview
 const localTauriEvents = ["tauri://created", "tauri://error"];
-/** @ignore */
+
 export type WindowLabel = string;
 
 /**
@@ -522,7 +522,7 @@ class Window {
     return emit(event, payload, { target: this.label });
   }
 
-  /** @ignore */
+  
   _handleTauriEvent<T>(event: string, handler: EventCallback<T>): boolean {
     if (localTauriEvents.includes(event)) {
       if (!(event in this.listeners)) {

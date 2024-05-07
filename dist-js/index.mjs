@@ -135,7 +135,7 @@ function getAll() {
         skip: true,
     }));
 }
-/** @ignore */
+
 // events that are emitted right here instead of by the created webview
 const localTauriEvents = ["tauri://created", "tauri://error"];
 /**
@@ -348,7 +348,7 @@ class Window {
         }
         return emit(event, payload, { target: this.label });
     }
-    /** @ignore */
+    
     _handleTauriEvent(event, handler) {
         if (localTauriEvents.includes(event)) {
             if (!(event in this.listeners)) {

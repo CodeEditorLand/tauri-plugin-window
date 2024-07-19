@@ -21,7 +21,7 @@
 		"@tauri-apps/api": "2.0.0-alpha.8"
 	},
 	"devDependencies": {
-		"tslib": "2.5.0"
+		"tslib": "2.6.3"
 	},
 	"authors": [
 		"Tauri Programme within The Commons Conservancy"

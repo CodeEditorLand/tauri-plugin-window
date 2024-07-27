@@ -7,7 +7,7 @@ authors = { workspace = true }
 license = { workspace = true }
 
 [package.metadata.docs.rs]
-features = [ "tauri/dox" ]
+features = ["tauri/dox"]
 
 [dependencies]
 tauri = { workspace = true }
@@ -15,6 +15,6 @@ serde = { workspace = true }
 thiserror = { workspace = true }
 
 [features]
-icon-png = [ "tauri/icon-png" ]
-icon-ico = [ "tauri/icon-ico" ]
-devtools = [ ]
+icon-png = ["tauri/icon-png"]
+icon-ico = ["tauri/icon-ico"]
+devtools = []

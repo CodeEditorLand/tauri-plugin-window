@@ -3,24 +3,26 @@
 // SPDX-License-Identifier: MIT
 
 (function () {
-  function toggleDevtoolsHotkey() {
-    const isHotkey = navigator.appVersion.includes("Mac")
-      ? (event) => event.metaKey && event.altKey && event.key === "I"
-      : (event) => event.ctrlKey && event.shiftKey && event.key === "I";
+	function toggleDevtoolsHotkey() {
+		const isHotkey = navigator.appVersion.includes("Mac")
+			? (event) => event.metaKey && event.altKey && event.key === "I"
+			: (event) => event.ctrlKey && event.shiftKey && event.key === "I";
 
-    document.addEventListener("keydown", (event) => {
-      if (isHotkey(event)) {
-        window.__TAURI_INVOKE__("plugin:window|internal_toggle_devtools");
-      }
-    });
-  }
+		document.addEventListener("keydown", (event) => {
+			if (isHotkey(event)) {
+				window.__TAURI_INVOKE__(
+					"plugin:window|internal_toggle_devtools",
+				);
+			}
+		});
+	}
 
-  if (
-    document.readyState === "complete" ||
-    document.readyState === "interactive"
-  ) {
-    toggleDevtoolsHotkey();
-  } else {
-    window.addEventListener("DOMContentLoaded", toggleDevtoolsHotkey, true);
-  }
+	if (
+		document.readyState === "complete" ||
+		document.readyState === "interactive"
+	) {
+		toggleDevtoolsHotkey();
+	} else {
+		window.addEventListener("DOMContentLoaded", toggleDevtoolsHotkey, true);
+	}
 })();

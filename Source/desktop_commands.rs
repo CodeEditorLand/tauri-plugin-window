@@ -5,8 +5,19 @@
 use serde::{Deserialize, Serialize, Serializer};
 use tauri::{
 	utils::config::{WindowConfig, WindowEffectsConfig},
-	AppHandle, CursorIcon, Icon, Manager, Monitor, PhysicalPosition, PhysicalSize, Position,
-	Runtime, Size, Theme, UserAttentionType, Window,
+	AppHandle,
+	CursorIcon,
+	Icon,
+	Manager,
+	Monitor,
+	PhysicalPosition,
+	PhysicalSize,
+	Position,
+	Runtime,
+	Size,
+	Theme,
+	UserAttentionType,
+	Window,
 };
 
 #[derive(Debug, thiserror::Error)]
@@ -18,10 +29,12 @@ pub enum Error {
 }
 
 impl Serialize for Error {
-	fn serialize<S>(&self, serializer: S) -> std::result::Result<S::Ok, S::Error>
+	fn serialize<S>(
+		&self,
+		serializer:S,
+	) -> std::result::Result<S::Ok, S::Error>
 	where
-		S: Serializer,
-	{
+		S: Serializer, {
 		serializer.serialize_str(self.to_string().as_ref())
 	}
 }
@@ -36,60 +49,76 @@ pub enum IconDto {
 	#[cfg(any(feature = "icon-png", feature = "icon-ico"))]
 	Raw(Vec<u8>),
 	Rgba {
-		rgba: Vec<u8>,
-		width: u32,
-		height: u32,
+		rgba:Vec<u8>,
+		width:u32,
+		height:u32,
 	},
 }
 
 impl From<IconDto> for Icon {
-	fn from(icon: IconDto) -> Self {
+	fn from(icon:IconDto) -> Self {
 		match icon {
 			#[cfg(any(feature = "icon-png", feature = "icon-ico"))]
 			IconDto::File(path) => Self::File(path),
 			#[cfg(any(feature = "icon-png", feature = "icon-ico"))]
 			IconDto::Raw(raw) => Self::Raw(raw),
-			IconDto::Rgba { rgba, width, height } => Self::Rgba { rgba, width, height },
+			IconDto::Rgba { rgba, width, height } => {
+				Self::Rgba { rgba, width, height }
+			},
 		}
 	}
 }
 
 #[tauri::command]
-pub async fn create<R: Runtime>(app: AppHandle<R>, options: WindowConfig) -> Result<()> {
+pub async fn create<R:Runtime>(
+	app:AppHandle<R>,
+	options:WindowConfig,
+) -> Result<()> {
 	tauri::window::WindowBuilder::from_config(&app, options).build()?;
 	Ok(())
 }
 
-fn get_window<R: Runtime>(window: Window<R>, label: Option<String>) -> Result<Window<R>> {
+fn get_window<R:Runtime>(
+	window:Window<R>,
+	label:Option<String>,
+) -> Result<Window<R>> {
 	match label {
-		Some(l) if !l.is_empty() => window.get_window(&l).ok_or(Error::WindowNotFound),
+		Some(l) if !l.is_empty() => {
+			window.get_window(&l).ok_or(Error::WindowNotFound)
+		},
 		_ => Ok(window),
 	}
 }
 
 macro_rules! getter {
-	($cmd: ident, $ret: ty) => {
+	($cmd:ident, $ret:ty) => {
 		#[tauri::command]
-		pub async fn $cmd<R: Runtime>(window: Window<R>, label: Option<String>) -> Result<$ret> {
+		pub async fn $cmd<R:Runtime>(
+			window:Window<R>,
+			label:Option<String>,
+		) -> Result<$ret> {
 			get_window(window, label)?.$cmd().map_err(Into::into)
 		}
 	};
 }
 
 macro_rules! setter {
-	($cmd: ident) => {
+	($cmd:ident) => {
 		#[tauri::command]
-		pub async fn $cmd<R: Runtime>(window: Window<R>, label: Option<String>) -> Result<()> {
+		pub async fn $cmd<R:Runtime>(
+			window:Window<R>,
+			label:Option<String>,
+		) -> Result<()> {
 			get_window(window, label)?.$cmd().map_err(Into::into)
 		}
 	};
 
-	($cmd: ident, $input: ty) => {
+	($cmd:ident, $input:ty) => {
 		#[tauri::command]
-		pub async fn $cmd<R: Runtime>(
-			window: Window<R>,
-			label: Option<String>,
-			value: $input,
+		pub async fn $cmd<R:Runtime>(
+			window:Window<R>,
+			label:Option<String>,
+			value:$input,
 		) -> Result<()> {
 			get_window(window, label)?.$cmd(value).map_err(Into::into)
 		}
@@ -152,16 +181,19 @@ setter!(start_dragging);
 setter!(print);
 
 #[tauri::command]
-pub async fn set_icon<R: Runtime>(
-	window: Window<R>,
-	label: Option<String>,
-	value: IconDto,
+pub async fn set_icon<R:Runtime>(
+	window:Window<R>,
+	label:Option<String>,
+	value:IconDto,
 ) -> Result<()> {
 	get_window(window, label)?.set_icon(value.into()).map_err(Into::into)
 }
 
 #[tauri::command]
-pub async fn toggle_maximize<R: Runtime>(window: Window<R>, label: Option<String>) -> Result<()> {
+pub async fn toggle_maximize<R:Runtime>(
+	window:Window<R>,
+	label:Option<String>,
+) -> Result<()> {
 	let window = get_window(window, label)?;
 	match window.is_maximized()? {
 		true => window.unmaximize()?,
@@ -171,9 +203,9 @@ pub async fn toggle_maximize<R: Runtime>(window: Window<R>, label: Option<String
 }
 
 #[tauri::command]
-pub async fn internal_toggle_maximize<R: Runtime>(
-	window: Window<R>,
-	label: Option<String>,
+pub async fn internal_toggle_maximize<R:Runtime>(
+	window:Window<R>,
+	label:Option<String>,
 ) -> Result<()> {
 	let window = get_window(window, label)?;
 	if window.is_resizable()? {
@@ -187,9 +219,9 @@ pub async fn internal_toggle_maximize<R: Runtime>(
 
 #[cfg(any(debug_assertions, feature = "devtools"))]
 #[tauri::command]
-pub async fn internal_toggle_devtools<R: Runtime>(
-	window: Window<R>,
-	label: Option<String>,
+pub async fn internal_toggle_devtools<R:Runtime>(
+	window:Window<R>,
+	label:Option<String>,
 ) -> Result<()> {
 	let window = get_window(window, label)?;
 	if window.is_devtools_open() {

@@ -19,7 +19,7 @@ use tauri::{
 #[cfg(desktop)]
 mod desktop_commands;
 
-pub fn init<R: Runtime>() -> TauriPlugin<R> {
+pub fn init<R:Runtime>() -> TauriPlugin<R> {
 	let mut init_script = String::new();
 	// window.print works on Linux/Windows; need to use the API on macOS
 	#[cfg(any(target_os = "macos", target_os = "ios"))]
@@ -37,7 +37,7 @@ pub fn init<R: Runtime>() -> TauriPlugin<R> {
 		.invoke_handler(|invoke| {
 			#[cfg(desktop)]
 			{
-				let handler: Box<dyn Fn(tauri::ipc::Invoke<R>) -> bool> =
+				let handler:Box<dyn Fn(tauri::ipc::Invoke<R>) -> bool> =
 					Box::new(tauri::generate_handler![
 						desktop_commands::create,
 						// getters

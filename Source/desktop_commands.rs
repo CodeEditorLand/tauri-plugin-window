@@ -29,10 +29,7 @@ pub enum Error {
 }
 
 impl Serialize for Error {
-	fn serialize<S>(
-		&self,
-		serializer:S,
-	) -> std::result::Result<S::Ok, S::Error>
+	fn serialize<S>(&self, serializer:S) -> std::result::Result<S::Ok, S::Error>
 	where
 		S: Serializer, {
 		serializer.serialize_str(self.to_string().as_ref())
@@ -62,30 +59,20 @@ impl From<IconDto> for Icon {
 			IconDto::File(path) => Self::File(path),
 			#[cfg(any(feature = "icon-png", feature = "icon-ico"))]
 			IconDto::Raw(raw) => Self::Raw(raw),
-			IconDto::Rgba { rgba, width, height } => {
-				Self::Rgba { rgba, width, height }
-			},
+			IconDto::Rgba { rgba, width, height } => Self::Rgba { rgba, width, height },
 		}
 	}
 }
 
 #[tauri::command]
-pub async fn create<R:Runtime>(
-	app:AppHandle<R>,
-	options:WindowConfig,
-) -> Result<()> {
+pub async fn create<R:Runtime>(app:AppHandle<R>, options:WindowConfig) -> Result<()> {
 	tauri::window::WindowBuilder::from_config(&app, options).build()?;
 	Ok(())
 }
 
-fn get_window<R:Runtime>(
-	window:Window<R>,
-	label:Option<String>,
-) -> Result<Window<R>> {
+fn get_window<R:Runtime>(window:Window<R>, label:Option<String>) -> Result<Window<R>> {
 	match label {
-		Some(l) if !l.is_empty() => {
-			window.get_window(&l).ok_or(Error::WindowNotFound)
-		},
+		Some(l) if !l.is_empty() => window.get_window(&l).ok_or(Error::WindowNotFound),
 		_ => Ok(window),
 	}
 }
@@ -93,10 +80,7 @@ fn get_window<R:Runtime>(
 macro_rules! getter {
 	($cmd:ident, $ret:ty) => {
 		#[tauri::command]
-		pub async fn $cmd<R:Runtime>(
-			window:Window<R>,
-			label:Option<String>,
-		) -> Result<$ret> {
+		pub async fn $cmd<R:Runtime>(window:Window<R>, label:Option<String>) -> Result<$ret> {
 			get_window(window, label)?.$cmd().map_err(Into::into)
 		}
 	};
@@ -105,10 +89,7 @@ macro_rules! getter {
 macro_rules! setter {
 	($cmd:ident) => {
 		#[tauri::command]
-		pub async fn $cmd<R:Runtime>(
-			window:Window<R>,
-			label:Option<String>,
-		) -> Result<()> {
+		pub async fn $cmd<R:Runtime>(window:Window<R>, label:Option<String>) -> Result<()> {
 			get_window(window, label)?.$cmd().map_err(Into::into)
 		}
 	};
@@ -190,10 +171,7 @@ pub async fn set_icon<R:Runtime>(
 }
 
 #[tauri::command]
-pub async fn toggle_maximize<R:Runtime>(
-	window:Window<R>,
-	label:Option<String>,
-) -> Result<()> {
+pub async fn toggle_maximize<R:Runtime>(window:Window<R>, label:Option<String>) -> Result<()> {
 	let window = get_window(window, label)?;
 	match window.is_maximized()? {
 		true => window.unmaximize()?,

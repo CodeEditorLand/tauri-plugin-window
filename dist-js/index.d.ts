@@ -73,6 +73,7 @@ declare class LogicalSize {
 	type: string;
 	width: number;
 	height: number;
+
 	constructor(width: number, height: number);
 }
 /**
@@ -84,6 +85,7 @@ declare class PhysicalSize {
 	type: string;
 	width: number;
 	height: number;
+
 	constructor(width: number, height: number);
 	/**
 	 * Converts the physical size to a logical one.
@@ -107,6 +109,7 @@ declare class LogicalPosition {
 	type: string;
 	x: number;
 	y: number;
+
 	constructor(x: number, y: number);
 }
 /**
@@ -118,6 +121,7 @@ declare class PhysicalPosition {
 	type: string;
 	x: number;
 	y: number;
+
 	constructor(x: number, y: number);
 	/**
 	 * Converts the physical position to a logical one.
@@ -172,6 +176,7 @@ declare class CloseRequestedEvent {
 	/** Event identifier used to unlisten */
 	id: number;
 	private _preventDefault;
+
 	constructor(event: Event<null>);
 	preventDefault(): void;
 	isPreventDefault(): boolean;

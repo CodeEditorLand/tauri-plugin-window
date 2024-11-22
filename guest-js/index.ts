@@ -933,6 +933,7 @@ class Window {
 		requestType: UserAttentionType | null,
 	): Promise<void> {
 		let requestType_ = null;
+
 		if (requestType) {
 			if (requestType === UserAttentionType.Critical) {
 				requestType_ = { type: "Critical" };
@@ -1818,12 +1819,14 @@ class Window {
 				handler({ ...event, payload: true });
 			},
 		);
+
 		const unlistenBlur = await this.listen<PhysicalPosition>(
 			TauriEvent.WINDOW_BLUR,
 			(event) => {
 				handler({ ...event, payload: false });
 			},
 		);
+
 		return () => {
 			unlistenFocus();
 			unlistenBlur();

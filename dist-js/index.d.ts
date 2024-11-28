@@ -1655,6 +1655,7 @@ declare function primaryMonitor(): Promise<Monitor | null>;
  * @since 2.0.0
  */
 declare function availableMonitors(): Promise<Monitor[]>;
+
 export {
 	Window,
 	CloseRequestedEvent,
@@ -1671,6 +1672,7 @@ export {
 	primaryMonitor,
 	availableMonitors,
 };
+
 export type {
 	Theme,
 	TitleBarStyle,

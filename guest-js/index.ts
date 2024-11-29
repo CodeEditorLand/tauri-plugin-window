@@ -77,11 +77,14 @@ type FileDropEvent =
  */
 class LogicalSize {
 	type = "Logical";
+
 	width: number;
+
 	height: number;
 
 	constructor(width: number, height: number) {
 		this.width = width;
+
 		this.height = height;
 	}
 }
@@ -93,11 +96,14 @@ class LogicalSize {
  */
 class PhysicalSize {
 	type = "Physical";
+
 	width: number;
+
 	height: number;
 
 	constructor(width: number, height: number) {
 		this.width = width;
+
 		this.height = height;
 	}
 
@@ -127,11 +133,14 @@ class PhysicalSize {
  */
 class LogicalPosition {
 	type = "Logical";
+
 	x: number;
+
 	y: number;
 
 	constructor(x: number, y: number) {
 		this.x = x;
+
 		this.y = y;
 	}
 }
@@ -143,11 +152,14 @@ class LogicalPosition {
  */
 class PhysicalPosition {
 	type = "Physical";
+
 	x: number;
+
 	y: number;
 
 	constructor(x: number, y: number) {
 		this.x = x;
+
 		this.y = y;
 	}
 
@@ -177,6 +189,7 @@ declare global {
 	interface Window {
 		__TAURI_METADATA__: {
 			__windows: WindowDef[];
+
 			__currentWindow: WindowDef;
 		};
 	}
@@ -209,11 +222,14 @@ class CloseRequestedEvent {
 	windowLabel: string;
 	/** Event identifier used to unlisten */
 	id: number;
+
 	private _preventDefault = false;
 
 	constructor(event: Event<null>) {
 		this.event = event.event;
+
 		this.windowLabel = event.windowLabel;
+
 		this.id = event.id;
 	}
 
@@ -363,6 +379,7 @@ class Window {
 	 */
 	constructor(label: WindowLabel, options: WindowOptions = {}) {
 		this.label = label;
+
 		this.listeners = Object.create(null);
 
 		// @ts-expect-error `skip` is not a public API so it is not defined in WindowOptions
@@ -397,6 +414,7 @@ class Window {
 			// @ts-expect-error `skip` is not defined in the public API but it is handled by the constructor
 			return new Window(label, { skip: true });
 		}
+
 		return null;
 	}
 
@@ -436,6 +454,7 @@ class Window {
 				return w;
 			}
 		}
+
 		return null;
 	}
 
@@ -468,9 +487,11 @@ class Window {
 			return Promise.resolve(() => {
 				// eslint-disable-next-line @typescript-eslint/no-unsafe-member-access, security/detect-object-injection
 				const listeners = this.listeners[event];
+
 				listeners.splice(listeners.indexOf(handler), 1);
 			});
 		}
+
 		return listen(event, handler, { target: this.label });
 	}
 
@@ -503,9 +524,11 @@ class Window {
 			return Promise.resolve(() => {
 				// eslint-disable-next-line security/detect-object-injection
 				const listeners = this.listeners[event];
+
 				listeners.splice(listeners.indexOf(handler), 1);
 			});
 		}
+
 		return once(event, handler, { target: this.label });
 	}
 
@@ -526,8 +549,10 @@ class Window {
 			for (const handler of this.listeners[event] || []) {
 				handler({ event, id: -1, windowLabel: this.label, payload });
 			}
+
 			return Promise.resolve();
 		}
+
 		return emit(event, payload, { target: this.label });
 	}
 
@@ -541,8 +566,10 @@ class Window {
 				// eslint-disable-next-line
 				this.listeners[event].push(handler);
 			}
+
 			return true;
 		}
+
 		return false;
 	}
 
@@ -1722,6 +1749,7 @@ class Window {
 	async onResized(handler: EventCallback<PhysicalSize>): Promise<UnlistenFn> {
 		return this.listen<PhysicalSize>(TauriEvent.WINDOW_RESIZED, (e) => {
 			e.payload = mapPhysicalSize(e.payload);
+
 			handler(e);
 		});
 	}
@@ -1750,6 +1778,7 @@ class Window {
 	): Promise<UnlistenFn> {
 		return this.listen<PhysicalPosition>(TauriEvent.WINDOW_MOVED, (e) => {
 			e.payload = mapPhysicalPosition(e.payload);
+
 			handler(e);
 		});
 	}
@@ -1784,6 +1813,7 @@ class Window {
 	): Promise<UnlistenFn> {
 		return this.listen<null>(TauriEvent.WINDOW_CLOSE_REQUESTED, (event) => {
 			const evt = new CloseRequestedEvent(event);
+
 			void Promise.resolve(handler(evt)).then(() => {
 				if (!evt.isPreventDefault()) {
 					return this.close();
@@ -1829,6 +1859,7 @@ class Window {
 
 		return () => {
 			unlistenFocus();
+
 			unlistenBlur();
 		};
 	}
@@ -1947,7 +1978,9 @@ class Window {
 
 		return () => {
 			unlistenFileDrop();
+
 			unlistenFileHover();
+
 			unlistenCancel();
 		};
 	}

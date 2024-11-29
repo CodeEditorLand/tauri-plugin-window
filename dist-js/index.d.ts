@@ -55,10 +55,12 @@ interface ScaleFactorChanged {
 type FileDropEvent =
 	| {
 			type: "hover";
+
 			paths: string[];
 	  }
 	| {
 			type: "drop";
+
 			paths: string[];
 	  }
 	| {
@@ -71,7 +73,9 @@ type FileDropEvent =
  */
 declare class LogicalSize {
 	type: string;
+
 	width: number;
+
 	height: number;
 
 	constructor(width: number, height: number);
@@ -83,7 +87,9 @@ declare class LogicalSize {
  */
 declare class PhysicalSize {
 	type: string;
+
 	width: number;
+
 	height: number;
 
 	constructor(width: number, height: number);
@@ -107,7 +113,9 @@ declare class PhysicalSize {
  */
 declare class LogicalPosition {
 	type: string;
+
 	x: number;
+
 	y: number;
 
 	constructor(x: number, y: number);
@@ -119,7 +127,9 @@ declare class LogicalPosition {
  */
 declare class PhysicalPosition {
 	type: string;
+
 	x: number;
+
 	y: number;
 
 	constructor(x: number, y: number);
@@ -145,6 +155,7 @@ declare global {
 	interface Window {
 		__TAURI_METADATA__: {
 			__windows: WindowDef[];
+
 			__currentWindow: WindowDef;
 		};
 	}
@@ -175,10 +186,13 @@ declare class CloseRequestedEvent {
 	windowLabel: string;
 	/** Event identifier used to unlisten */
 	id: number;
+
 	private _preventDefault;
 
 	constructor(event: Event<null>);
+
 	preventDefault(): void;
+
 	isPreventDefault(): boolean;
 }
 export type CursorIcon =

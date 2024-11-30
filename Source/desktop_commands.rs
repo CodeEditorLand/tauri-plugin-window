@@ -67,6 +67,7 @@ impl From<IconDto> for Icon {
 #[tauri::command]
 pub async fn create<R:Runtime>(app:AppHandle<R>, options:WindowConfig) -> Result<()> {
 	tauri::window::WindowBuilder::from_config(&app, options).build()?;
+
 	Ok(())
 }
 
@@ -173,10 +174,12 @@ pub async fn set_icon<R:Runtime>(
 #[tauri::command]
 pub async fn toggle_maximize<R:Runtime>(window:Window<R>, label:Option<String>) -> Result<()> {
 	let window = get_window(window, label)?;
+
 	match window.is_maximized()? {
 		true => window.unmaximize()?,
 		false => window.maximize()?,
 	};
+
 	Ok(())
 }
 
@@ -186,12 +189,14 @@ pub async fn internal_toggle_maximize<R:Runtime>(
 	label:Option<String>,
 ) -> Result<()> {
 	let window = get_window(window, label)?;
+
 	if window.is_resizable()? {
 		match window.is_maximized()? {
 			true => window.unmaximize()?,
 			false => window.maximize()?,
 		};
 	}
+
 	Ok(())
 }
 
@@ -202,10 +207,12 @@ pub async fn internal_toggle_devtools<R:Runtime>(
 	label:Option<String>,
 ) -> Result<()> {
 	let window = get_window(window, label)?;
+
 	if window.is_devtools_open() {
 		window.close_devtools();
 	} else {
 		window.open_devtools();
 	}
+
 	Ok(())
 }

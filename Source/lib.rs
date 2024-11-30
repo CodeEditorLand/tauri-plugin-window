@@ -26,6 +26,7 @@ pub fn init<R:Runtime>() -> TauriPlugin<R> {
 	{
 		init_script.push_str(include_str!("./scripts/print.js"));
 	}
+
 	init_script.push_str(include_str!("./scripts/drag.js"));
 	#[cfg(any(debug_assertions, feature = "devtools"))]
 	init_script.push_str(include_str!("./scripts/toggle-devtools.js"));
@@ -107,6 +108,7 @@ pub fn init<R:Runtime>() -> TauriPlugin<R> {
 			#[cfg(mobile)]
 			{
 				invoke.resolver.reject("Window API not available on mobile");
+
 				return true;
 			}
 		})

@@ -4,7 +4,6 @@
 
 use serde::{Deserialize, Serialize, Serializer};
 use tauri::{
-	utils::config::{WindowConfig, WindowEffectsConfig},
 	AppHandle,
 	CursorIcon,
 	Icon,
@@ -18,6 +17,7 @@ use tauri::{
 	Theme,
 	UserAttentionType,
 	Window,
+	utils::config::{WindowConfig, WindowEffectsConfig},
 };
 
 #[derive(Debug, thiserror::Error)]
